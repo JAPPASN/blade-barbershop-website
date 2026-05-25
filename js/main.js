@@ -196,12 +196,12 @@ document.getElementById('bkForm').addEventListener('submit', e => {
     : '';
 
   const waMsg = encodeURIComponent(
-    `Сәлеметсіз бе! Мен запиське жазылғым келеді.\n` +
+    `Сәлеметсіз бе! Уақыт брондағым келеді.\n\n` +
     `Аты: ${name}\n` +
     `Телефон: ${phone}\n` +
     `Қызмет: ${svcName}\n` +
-    `Мастер: ${master.value}\n` +
-    `Күн: ${dateStr}, ${selectedTime || ''}`
+    `Шебер: ${master.value}\n` +
+    `Күн: ${dateStr}${selectedTime ? ', ' + selectedTime : ''}`
   );
 
   document.getElementById('bkForm').style.display = 'none';
