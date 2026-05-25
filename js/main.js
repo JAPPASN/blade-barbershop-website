@@ -6,23 +6,7 @@
    LICENSE CHECK — runs before everything
    ═══════════════════════════════════════════════ */
 (function checkLicense() {
-  const result = LICENSE.current();
-
-  if (!result || !result.ok) {
-    /* Show gate immediately, block page */
-    document.body.style.overflow = 'hidden';
-    document.getElementById('intro').style.display = 'none';
-    document.getElementById('licenseGate').style.display = 'flex';
-
-    if (result && result.expired) {
-      document.getElementById('lgErr').textContent =
-        `Токен мерзімі өткен (${result.payload.e}). Жаңасын алыңыз.`;
-    }
-    return;
-  }
-
-  /* Valid license — show status bar */
-  showLicenseBar(result.payload);
+  /* License gate disabled — site opens freely */
 })();
 
 function showLicenseBar(p) {
