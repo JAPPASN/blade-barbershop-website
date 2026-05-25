@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BLADE — Premium Barbershop Almaty</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<!-- ═══════════════════ LICENSE GATE ═══════════════════ -->
+<div id="licenseGate" style="display:none">
+  <div class="lg-overlay"></div>
+  <div class="lg-box">
+    <div class="lg-logo">BLADE</div>
+    <div class="lg-sub">BARBERSHOP SYSTEM</div>
+    <div class="lg-icon"><i class="fas fa-lock"></i></div>
+    <h2 class="lg-title">Активация қажет</h2>
+    <p class="lg-desc">Бұл сайт лицензияланған. Жалғастыру үшін токенді енгізіңіз.</p>
+    <div class="lg-input-wrap">
+      <input type="text" id="lgTokenInput" placeholder="BLD-XXXX…" autocomplete="off" spellcheck="false"
+             onkeydown="if(event.key==='Enter')doActivate()">
+      <button class="lg-btn" onclick="doActivate()">
+        <i class="fas fa-unlock-alt"></i> Активациялау
+      </button>
+    </div>
+    <div class="lg-err" id="lgErr"></div>
+    <div class="lg-hint">
+      Токен сатып алу үшін:
+      <a href="https://wa.me/77757248619?text=Сайт токені керек" target="_blank">
+        <i class="fab fa-whatsapp"></i> WhatsApp
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ LICENSE STATUS BAR ═══════════════════ -->
+<div id="licenseBar" style="display:none" class="license-bar">
+  <span id="lbText"></span>
+  <button onclick="clearLicense()" title="Токенді өшіру"><i class="fas fa-times"></i></button>
+</div>
+
+<!-- ═══════════════════ CINEMATIC INTRO ═══════════════════ -->
+<div id="intro" class="intro">
+  <div class="intro-inner">
+    <div class="intro-scissors">✂</div>
+    <div class="intro-logo">BLADE</div>
+    <div class="intro-sub">BARBERSHOP</div>
+    <div class="intro-bar"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ NAVBAR ═══════════════════ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-wrap">
+    <a href="#home" class="nav-logo">BLADE</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Главная</a></li>
+      <li><a href="#services">Услуги</a></li>
+      <li><a href="#masters">Мастера</a></li>
+      <li><a href="#booking">Запись</a></li>
+      <li><a href="#gallery">Работы</a></li>
+      <li><a href="#reviews">Отзывы</a></li>
+      <li><a href="#location">Адрес</a></li>
+    </ul>
+    <a href="#booking" class="nav-book">Записаться</a>
+    <button class="burger" id="burger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section id="home" class="hero">
+  <div class="hero-video-wrap">
+    <iframe
+      src="https://www.youtube.com/embed/K4TOrB7at0Y?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&playsinline=1&playlist=K4TOrB7at0Y"
+      frameborder="0"
+      allow="autoplay; encrypted-media; gyroscope"
+      allowfullscreen
+      class="hero-iframe"
+      id="heroIframe">
+    </iframe>
+    <div class="hero-cinematic-bg"></div>
+  </div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">✦ Premium Barbershop • Almaty</div>
+    <h1 class="hero-title">
+      <span class="line">STYLE</span>
+      <span class="line gold neon">STARTS</span>
+      <span class="line">HERE</span>
+    </h1>
+    <p class="hero-sub">Алматының ең үздік барбершопы — мінсіз стиль, кәсіби мастерлер</p>
+    <div class="hero-btns">
+      <a href="#booking" class="btn gold">
+        <i class="fas fa-calendar-check"></i> Записаться
+      </a>
+      <a href="#services" class="btn outline">
+        Услуги & Цены
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="sn">500+</span><span class="sl">Клиент</span></div>
+      <div class="sdiv"></div>
+      <div class="stat"><span class="sn">5</span><span class="sl">Мастер</span></div>
+      <div class="sdiv"></div>
+      <div class="stat"><span class="sn">3+</span><span class="sl">Жыл</span></div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SERVICES ═══════════════════ -->
+<section id="services" class="section services">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-tag">Наши услуги</span>
+      <h2>Не просто стрижка — <span class="gold-t">трансформация</span></h2>
+    </div>
+    <div class="services-grid">
+
+      <div class="svc-card" data-delay="0">
+        <div class="svc-icon"><i class="fas fa-cut"></i></div>
+        <h3>Classic Fade</h3>
+        <p>Классикалық fade стрижка, мінсіз өтпелімен</p>
+        <div class="svc-footer">
+          <span class="svc-price">от 3 000 ₸</span>
+          <span class="svc-time"><i class="far fa-clock"></i> 45 мин</span>
+        </div>
+      </div>
+
+      <div class="svc-card featured" data-delay="100">
+        <div class="svc-badge">Популярное</div>
+        <div class="svc-icon"><i class="fas fa-star"></i></div>
+        <h3>Skin Fade + Beard</h3>
+        <p>Стрижка + сақал реттеу пакеті</p>
+        <div class="svc-footer">
+          <span class="svc-price">от 5 000 ₸</span>
+          <span class="svc-time"><i class="far fa-clock"></i> 75 мин</span>
+        </div>
+      </div>
+
+      <div class="svc-card" data-delay="150">
+        <div class="svc-icon"><i class="fas fa-user-tie"></i></div>
+        <h3>Beard Trim</h3>
+        <p>Сақалды реттеу мен пішіндеу</p>
+        <div class="svc-footer">
+          <span class="svc-price">от 2 000 ₸</span>
+          <span class="svc-time"><i class="far fa-clock"></i> 30 мин</span>
+        </div>
+      </div>
+
+      <div class="svc-card" data-delay="200">
+        <div class="svc-icon"><i class="fas fa-magic"></i></div>
+        <h3>Hair Styling</h3>
+        <p>Шаш укладкасы кәсіби өнімдермен</p>
+        <div class="svc-footer">
+          <span class="svc-price">от 1 500 ₸</span>
+          <span class="svc-time"><i class="far fa-clock"></i> 20 мин</span>
+        </div>
+      </div>
+
+      <div class="svc-card vip" data-delay="250">
+        <div class="svc-badge vip-badge"><i class="fas fa-crown"></i> VIP</div>
+        <div class="svc-icon"><i class="fas fa-crown"></i></div>
+        <h3>VIP Package</h3>
+        <p>Стрижка + сақал + скалп массаж + напиток</p>
+        <ul class="svc-features">
+          <li><i class="fas fa-check"></i> Жеке кабинет</li>
+          <li><i class="fas fa-check"></i> Кәсіби мастер</li>
+          <li><i class="fas fa-check"></i> Напиток</li>
+        </ul>
+        <div class="svc-footer">
+          <span class="svc-price">от 10 000 ₸</span>
+          <span class="svc-time"><i class="far fa-clock"></i> 120 мин</span>
+        </div>
+      </div>
+
+      <div class="svc-card" data-delay="300">
+        <div class="svc-icon"><i class="fas fa-spray-can"></i></div>
+        <h3>Hair Treatment</h3>
+        <p>Шаш маскасы мен арнайы күтім</p>
+        <div class="svc-footer">
+          <span class="svc-price">от 4 000 ₸</span>
+          <span class="svc-time"><i class="far fa-clock"></i> 60 мин</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ MASTERS ═══════════════════ -->
+<section id="masters" class="section masters">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-tag">Команда</span>
+      <h2>Наши <span class="gold-t">мастера</span></h2>
+    </div>
+    <div class="masters-grid">
+
+      <div class="master-card" data-delay="0">
+        <div class="master-photo">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Арман" class="master-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="master-avatar-ph" style="display:none"><i class="fas fa-user"></i></div>
+          <a href="#" class="master-ig"><i class="fab fa-instagram"></i></a>
+        </div>
+        <div class="master-info">
+          <h3>Арман</h3>
+          <span class="master-role">Senior Barber</span>
+          <span class="master-exp">5 жыл тәжірибе</span>
+          <div class="stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <b>5.0</b>
+          </div>
+          <a href="#booking" class="btn gold sm">Записаться</a>
+        </div>
+      </div>
+
+      <div class="master-card" data-delay="100">
+        <div class="master-photo">
+          <img src="https://randomuser.me/api/portraits/men/44.jpg" alt="Дамир" class="master-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="master-avatar-ph" style="display:none"><i class="fas fa-user"></i></div>
+          <a href="#" class="master-ig"><i class="fab fa-instagram"></i></a>
+        </div>
+        <div class="master-info">
+          <h3>Дамир</h3>
+          <span class="master-role">Fade Specialist</span>
+          <span class="master-exp">3 жыл тәжірибе</span>
+          <div class="stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+            <b>4.8</b>
+          </div>
+          <a href="#booking" class="btn gold sm">Записаться</a>
+        </div>
+      </div>
+
+      <div class="master-card" data-delay="200">
+        <div class="master-photo">
+          <img src="https://randomuser.me/api/portraits/men/55.jpg" alt="Нұрлан" class="master-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="master-avatar-ph" style="display:none"><i class="fas fa-user"></i></div>
+          <a href="#" class="master-ig"><i class="fab fa-instagram"></i></a>
+        </div>
+        <div class="master-info">
+          <h3>Нұрлан</h3>
+          <span class="master-role">Beard Expert</span>
+          <span class="master-exp">4 жыл тәжірибе</span>
+          <div class="stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <b>4.9</b>
+          </div>
+          <a href="#booking" class="btn gold sm">Записаться</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ BOOKING ═══════════════════ -->
+<section id="booking" class="section booking">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-tag">Online Запись</span>
+      <h2>Жазылу <span class="gold-t">онлайн</span></h2>
+    </div>
+
+    <div class="booking-wrap">
+      <!-- Steps indicator -->
+      <div class="bk-steps">
+        <div class="bk-step active" data-s="1"><span class="snum">1</span><span class="slbl">Қызмет</span></div>
+        <div class="sline"></div>
+        <div class="bk-step" data-s="2"><span class="snum">2</span><span class="slbl">Мастер</span></div>
+        <div class="sline"></div>
+        <div class="bk-step" data-s="3"><span class="snum">3</span><span class="slbl">Уақыт</span></div>
+        <div class="sline"></div>
+        <div class="bk-step" data-s="4"><span class="snum">4</span><span class="slbl">Растау</span></div>
+      </div>
+
+      <form id="bkForm" class="bk-form" novalidate>
+
+        <!-- Step 1 -->
+        <div class="fs active" id="fs1">
+          <h3>Қызмет таңдаңыз</h3>
+          <div class="svc-pick">
+            <label class="sp-card">
+              <input type="radio" name="service" value="Classic Fade|3000|45">
+              <div><i class="fas fa-cut"></i><span>Classic Fade</span><em>3 000 ₸</em></div>
+            </label>
+            <label class="sp-card">
+              <input type="radio" name="service" value="Skin Fade + Beard|5000|75">
+              <div><i class="fas fa-star"></i><span>Skin Fade + Beard</span><em>5 000 ₸</em></div>
+            </label>
+            <label class="sp-card">
+              <input type="radio" name="service" value="Beard Trim|2000|30">
+              <div><i class="fas fa-user-tie"></i><span>Beard Trim</span><em>2 000 ₸</em></div>
+            </label>
+            <label class="sp-card">
+              <input type="radio" name="service" value="Hair Styling|1500|20">
+              <div><i class="fas fa-magic"></i><span>Hair Styling</span><em>1 500 ₸</em></div>
+            </label>
+            <label class="sp-card vip-sp">
+              <input type="radio" name="service" value="VIP Package|10000|120">
+              <div><i class="fas fa-crown"></i><span>VIP Package</span><em>10 000 ₸</em></div>
+            </label>
+          </div>
+          <div class="fs-btns">
+            <button type="button" class="btn gold" onclick="bkNext(1)">Келесі <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="fs" id="fs2">
+          <h3>Мастер таңдаңыз</h3>
+          <div class="master-pick">
+            <label class="mp-card">
+              <input type="radio" name="master" value="Арман">
+              <div><div class="mp-av"><i class="fas fa-user"></i></div><span>Арман</span><em>Senior Barber</em></div>
+            </label>
+            <label class="mp-card">
+              <input type="radio" name="master" value="Дамир">
+              <div><div class="mp-av"><i class="fas fa-user"></i></div><span>Дамир</span><em>Fade Specialist</em></div>
+            </label>
+            <label class="mp-card">
+              <input type="radio" name="master" value="Нұрлан">
+              <div><div class="mp-av"><i class="fas fa-user"></i></div><span>Нұрлан</span><em>Beard Expert</em></div>
+            </label>
+            <label class="mp-card">
+              <input type="radio" name="master" value="Кез келген">
+              <div><div class="mp-av"><i class="fas fa-random"></i></div><span>Кез келген</span><em>Бос мастер</em></div>
+            </label>
+          </div>
+          <div class="fs-btns">
+            <button type="button" class="btn outline" onclick="bkPrev(2)"><i class="fas fa-arrow-left"></i> Артқа</button>
+            <button type="button" class="btn gold" onclick="bkNext(2)">Келесі <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="fs" id="fs3">
+          <h3>Күн мен уақыт таңдаңыз</h3>
+          <div class="dt-pick">
+            <div class="cal-wrap">
+              <div class="cal-head">
+                <button type="button" id="calPrev"><i class="fas fa-chevron-left"></i></button>
+                <span id="calTitle"></span>
+                <button type="button" id="calNext"><i class="fas fa-chevron-right"></i></button>
+              </div>
+              <div class="cal-days-head">
+                <span>Дс</span><span>Сс</span><span>Ср</span><span>Бс</span>
+                <span>Жм</span><span>Сб</span><span>Жс</span>
+              </div>
+              <div class="cal-grid" id="calGrid"></div>
+            </div>
+            <div class="time-wrap">
+              <p class="time-label">Уақыт таңдаңыз</p>
+              <div class="time-slots" id="timeSlots">
+                <p class="time-hint">Алдымен күн таңдаңыз</p>
+              </div>
+            </div>
+          </div>
+          <div class="fs-btns">
+            <button type="button" class="btn outline" onclick="bkPrev(3)"><i class="fas fa-arrow-left"></i> Артқа</button>
+            <button type="button" class="btn gold" onclick="bkNext(3)">Келесі <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="fs" id="fs4">
+          <h3>Деректеріңізді жазыңыз</h3>
+          <div class="contact-fields">
+            <div class="fg">
+              <label>Атыңыз <span>*</span></label>
+              <input type="text" name="name" id="bkName" placeholder="Мысалы: Арман" required>
+            </div>
+            <div class="fg">
+              <label>Телефон <span>*</span></label>
+              <input type="tel" name="phone" id="bkPhone" placeholder="+7 (___) ___-__-__" required>
+            </div>
+          </div>
+          <div class="bk-summary" id="bkSummary"></div>
+          <div class="fg">
+            <label>Ескерту</label>
+            <textarea name="note" placeholder="Арнайы тілектер немесе сұрақтар..."></textarea>
+          </div>
+          <div class="save-fav">
+            <label class="checkbox-label">
+              <input type="checkbox" id="saveFav" checked>
+              <span>Мастерімді сақтау (VIP жазылу)</span>
+            </label>
+          </div>
+          <div class="fs-btns">
+            <button type="button" class="btn outline" onclick="bkPrev(4)"><i class="fas fa-arrow-left"></i> Артқа</button>
+            <button type="submit" class="btn gold"><i class="fas fa-check"></i> Жазылу</button>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- Success -->
+      <div class="bk-success" id="bkSuccess">
+        <div class="success-ico"><i class="fas fa-check-circle"></i></div>
+        <h3>Сәтті жазылдыңыз!</h3>
+        <p id="successMsg">Жуырда WhatsApp арқылы растаймыз.</p>
+        <button class="btn gold" onclick="bkReset()">Жаңа жазылу</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ INSTAGRAM / GALLERY ═══════════════════ -->
+<section id="gallery" class="section gallery">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-tag">Instagram</span>
+      <h2>Соңғы <span class="gold-t">жұмыстар</span></h2>
+      <a href="https://instagram.com/blade_barbershop" target="_blank" class="ig-follow">
+        <i class="fab fa-instagram"></i> @blade_barbershop
+      </a>
+    </div>
+    <div class="gallery-grid">
+      <div class="gi" data-delay="0"><div class="gi-ph"><i class="fas fa-cut"></i></div><div class="gi-ov"><i class="fab fa-instagram"></i></div></div>
+      <div class="gi large" data-delay="80"><div class="gi-ph"><i class="fas fa-star"></i></div><div class="gi-ov"><i class="fab fa-instagram"></i><span>Reels</span></div></div>
+      <div class="gi" data-delay="120"><div class="gi-ph"><i class="fas fa-user-tie"></i></div><div class="gi-ov"><i class="fab fa-instagram"></i></div></div>
+      <div class="gi" data-delay="160"><div class="gi-ph"><i class="fas fa-crown"></i></div><div class="gi-ov"><i class="fab fa-instagram"></i></div></div>
+      <div class="gi" data-delay="200"><div class="gi-ph"><i class="fas fa-magic"></i></div><div class="gi-ov"><i class="fab fa-instagram"></i></div></div>
+      <div class="gi" data-delay="240"><div class="gi-ph"><i class="fas fa-spray-can"></i></div><div class="gi-ov"><i class="fab fa-instagram"></i></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ REVIEWS ═══════════════════ -->
+<section id="reviews" class="section reviews">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-tag">Отзывы</span>
+      <h2>Клиент <span class="gold-t">пікірлері</span></h2>
+    </div>
+    <div class="rv-slider">
+      <div class="rv-track" id="rvTrack">
+
+        <div class="rv-card">
+          <div class="rv-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+          <p>"Өте кәсіби мастерлер. Арман маған тамаша fade жасады. Міндетті түрде қайта келемін!"</p>
+          <div class="rv-author"><div class="rv-av">А</div><div><b>Алибек Сейткали</b><small>2 апта бұрын</small></div></div>
+        </div>
+
+        <div class="rv-card">
+          <div class="rv-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+          <p>"VIP пакетін алдым — өте сапалы! Жеке кабинет, ішімдік, скалп массаж. Нағыз люкс сервис!"</p>
+          <div class="rv-author"><div class="rv-av">Н</div><div><b>Нұрсейіт Қасым</b><small>1 апта бұрын</small></div></div>
+        </div>
+
+        <div class="rv-card">
+          <div class="rv-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+          <p>"Дамир — асыл маман. Нақты өзім айтқандай жасады. Атмосфера да керемет!"</p>
+          <div class="rv-author"><div class="rv-av">Д</div><div><b>Дәурен Айтбеков</b><small>3 апта бұрын</small></div></div>
+        </div>
+
+        <div class="rv-card">
+          <div class="rv-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+          <p>"Тамаша орын! Отзывтар шын екен. Нұрлан сақалымды өте дәл реттеді. Ең жақсы barbershop!"</p>
+          <div class="rv-author"><div class="rv-av">М</div><div><b>Мақсат Бериков</b><small>5 күн бұрын</small></div></div>
+        </div>
+
+      </div>
+    </div>
+    <div class="rv-ctrl">
+      <button class="rv-btn" id="rvPrev"><i class="fas fa-chevron-left"></i></button>
+      <div class="rv-dots" id="rvDots"></div>
+      <button class="rv-btn" id="rvNext"><i class="fas fa-chevron-right"></i></button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ LOCATION ═══════════════════ -->
+<section id="location" class="section location">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-tag">Мекенжай</span>
+      <h2>Бізді <span class="gold-t">табу</span></h2>
+    </div>
+    <div class="loc-wrap">
+      <div class="loc-info">
+        <div class="loc-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <div><span>Мекенжай</span><b>Алматы, Сатпаев к., 22</b></div>
+        </div>
+        <div class="loc-item">
+          <i class="far fa-clock"></i>
+          <div><span>Жұмыс уақыты</span><b>Дс — Жс: 09:00 — 22:00</b></div>
+        </div>
+        <div class="loc-item">
+          <i class="fas fa-phone"></i>
+          <div><span>Телефон</span><b><a href="tel:+77757248619" style="color:var(--gold)">+7 (775) 724-86-19</a></b></div>
+        </div>
+        <div class="loc-item">
+          <i class="fas fa-envelope"></i>
+          <div><span>Email</span><b><a href="mailto:nursat.aisin@mail.ru" style="color:var(--gold)">nursat.aisin@mail.ru</a></b></div>
+        </div>
+        <div class="loc-item">
+          <i class="fab fa-instagram"></i>
+          <div><span>Instagram</span><b><a href="https://instagram.com/blade_barbershop" target="_blank">@blade_barbershop</a></b></div>
+        </div>
+        <div class="loc-btns">
+          <a href="https://2gis.kz/almaty" target="_blank" class="btn gold">
+            <i class="fas fa-route"></i> 2GIS маршрут
+          </a>
+          <a href="https://maps.google.com/?q=Almaty" target="_blank" class="btn outline">
+            <i class="fab fa-google"></i> Google Maps
+          </a>
+        </div>
+      </div>
+      <div class="map-frame">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11627.1!2d76.9286!3d43.2567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38836ec91dafffff%3A0x50b6a8bb4acafefe!2sAlmaty%2C%20Kazakhstan!5e0!3m2!1sen!2skz!4v1234567890"
+          width="100%" height="420"
+          style="border:0;" allowfullscreen loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="ft-brand">
+        <div class="ft-logo">BLADE</div>
+        <p>Алматының ең үздік<br>премиум барбершопы</p>
+        <div class="ft-socials">
+          <a href="https://instagram.com/blade_barbershop" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://wa.me/77757248619" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          <a href="#"><i class="fab fa-tiktok"></i></a>
+          <a href="#"><i class="fab fa-telegram"></i></a>
+        </div>
+      </div>
+      <div class="ft-col">
+        <h4>Навигация</h4>
+        <ul>
+          <li><a href="#home">Главная</a></li>
+          <li><a href="#services">Услуги</a></li>
+          <li><a href="#masters">Мастерлер</a></li>
+          <li><a href="#booking">Онлайн запись</a></li>
+          <li><a href="#gallery">Жұмыстар</a></li>
+          <li><a href="#location">Адрес</a></li>
+        </ul>
+      </div>
+      <div class="ft-col">
+        <h4>Услуги</h4>
+        <ul>
+          <li>Classic Fade</li>
+          <li>Skin Fade + Beard</li>
+          <li>Beard Trim</li>
+          <li>Hair Styling</li>
+          <li>VIP Package</li>
+        </ul>
+      </div>
+      <div class="ft-col">
+        <h4>Байланыс</h4>
+        <p><i class="fas fa-map-marker-alt"></i> Алматы, Сатпаев, 22</p>
+        <p><i class="fas fa-phone"></i> +7 (775) 724-86-19</p>
+        <p><i class="fas fa-envelope"></i> <a href="mailto:nursat.aisin@mail.ru" style="color:var(--gray)">nursat.aisin@mail.ru</a></p>
+        <p><i class="far fa-clock"></i> 09:00 — 22:00</p>
+        <a href="#booking" class="btn gold sm" style="margin-top:1rem">Записаться</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 BLADE Barbershop. Барлық құқықтар қорғалған.</p>
+      <p>Made with <i class="fas fa-heart" style="color:var(--gold)"></i> in Almaty</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════ WHATSAPP FAB ═══════════════════ -->
+<a href="https://wa.me/77757248619?text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%81%D1%96%D0%B7+%D0%B1%D0%B5%2C+%D0%B6%D0%B0%D0%B7%D1%8B%D0%BB%D1%83%D2%93%D0%B0+%D0%B6%D0%B0%D0%B7%D1%8B%D0%BB%D0%B0%D0%B9%D1%8B%D0%BD+%D0%B4%D0%B5%D0%BF+%D0%B5%D0%B4%D1%96%D0%BC"
+   class="wa-fab" target="_blank" id="waFab">
+  <i class="fab fa-whatsapp"></i>
+  <span class="wa-tip">WhatsApp арқылы жазылу</span>
+  <div class="wa-pulse"></div>
+</a>
+
+
+<!-- Scroll top -->
+<button class="scroll-top" id="scrollTop" onclick="scrollTo({top:0,behavior:'smooth'})">
+  <i class="fas fa-chevron-up"></i>
+</button>
+
+<script src="js/license.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

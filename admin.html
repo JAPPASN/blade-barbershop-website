@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BLADE Admin — Token Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --black: #080808; --dark: #111; --dark2: #181818; --dark3: #222;
+      --gold: #d4af37; --gold2: #f0cf68; --gold3: #b8942e;
+      --gold-dim: rgba(212,175,55,.15); --border: rgba(212,175,55,.2);
+      --white: #fff; --gray: #888; --radius: 12px;
+    }
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body { font-family:'Montserrat',sans-serif; background:var(--black); color:var(--white); min-height:100vh; }
+    a { color:inherit; text-decoration:none; }
+    ::-webkit-scrollbar { width:6px; } ::-webkit-scrollbar-track { background:var(--dark); } ::-webkit-scrollbar-thumb { background:var(--gold3); border-radius:3px; }
+
+    /* ── LOGIN ── */
+    #loginScreen {
+      position:fixed; inset:0; background:var(--black); z-index:999;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .login-box {
+      background:var(--dark2); border:1px solid var(--border); border-radius:20px;
+      padding:48px 40px; width:100%; max-width:380px; text-align:center;
+    }
+    .login-logo { font-family:'Cinzel',serif; font-size:2rem; font-weight:900; color:var(--gold); letter-spacing:6px; margin-bottom:4px; }
+    .login-sub { font-size:.75rem; color:var(--gray); letter-spacing:3px; text-transform:uppercase; margin-bottom:36px; }
+    .login-box input {
+      width:100%; padding:14px 16px; border-radius:var(--radius);
+      background:var(--dark3); border:1.5px solid var(--border);
+      color:var(--white); font-size:1rem; outline:none; text-align:center;
+      letter-spacing:4px; font-family:'Montserrat',sans-serif;
+      transition:border-color .2s;
+    }
+    .login-box input:focus { border-color:var(--gold); }
+    .login-btn {
+      width:100%; margin-top:16px; padding:14px;
+      background:var(--gold); color:var(--black); border:none;
+      border-radius:var(--radius); font-size:.9rem; font-weight:700;
+      cursor:pointer; font-family:'Montserrat',sans-serif;
+      transition:all .2s;
+    }
+    .login-btn:hover { background:var(--gold2); }
+    .login-err { color:#e74c3c; font-size:.8rem; margin-top:10px; min-height:20px; }
+
+    /* ── LAYOUT ── */
+    #adminApp { display:none; }
+    .admin-nav {
+      background:rgba(8,8,8,.95); border-bottom:1px solid var(--border);
+      padding:16px 32px; display:flex; align-items:center; justify-content:space-between;
+      position:sticky; top:0; z-index:10;
+    }
+    .admin-logo { font-family:'Cinzel',serif; font-size:1.3rem; font-weight:900; color:var(--gold); letter-spacing:4px; }
+    .admin-logo span { font-size:.7rem; color:var(--gray); letter-spacing:2px; display:block; }
+    .logout-btn {
+      background:transparent; border:1px solid var(--border); color:var(--gray);
+      padding:8px 16px; border-radius:8px; font-size:.8rem; cursor:pointer;
+      transition:all .2s; font-family:'Montserrat',sans-serif;
+    }
+    .logout-btn:hover { border-color:var(--gold); color:var(--gold); }
+
+    .admin-body { max-width:1100px; margin:0 auto; padding:40px 24px; }
+    .admin-grid { display:grid; grid-template-columns:1fr 1.4fr; gap:32px; }
+
+    /* ── CARD ── */
+    .card {
+      background:var(--dark2); border:1px solid var(--border);
+      border-radius:16px; padding:32px;
+    }
+    .card h2 { font-family:'Cinzel',serif; font-size:1.1rem; color:var(--gold); margin-bottom:24px; display:flex; align-items:center; gap:10px; }
+    .card h2 i { font-size:.9rem; }
+
+    /* ── FORM ── */
+    .fg { display:flex; flex-direction:column; gap:7px; margin-bottom:16px; }
+    .fg label { font-size:.78rem; color:var(--gray); text-transform:uppercase; letter-spacing:1px; }
+    .fg input, .fg select, .fg textarea {
+      background:var(--dark3); border:1.5px solid var(--border);
+      border-radius:var(--radius); padding:11px 14px;
+      color:var(--white); font-size:.88rem; outline:none;
+      font-family:'Montserrat',sans-serif; transition:border-color .2s;
+    }
+    .fg input:focus, .fg select:focus { border-color:var(--gold); }
+    .fg select option { background:var(--dark3); }
+    .fg textarea { height:60px; resize:none; }
+    .row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+    .gen-btn {
+      width:100%; padding:14px; background:var(--gold); color:var(--black);
+      border:none; border-radius:var(--radius); font-size:.9rem; font-weight:700;
+      cursor:pointer; font-family:'Montserrat',sans-serif; display:flex;
+      align-items:center; justify-content:center; gap:8px; transition:all .2s;
+      margin-top:8px;
+    }
+    .gen-btn:hover { background:var(--gold2); box-shadow:0 6px 20px rgba(212,175,55,.35); }
+
+    /* ── TOKEN RESULT ── */
+    .token-result { display:none; margin-top:24px; }
+    .token-box {
+      background:var(--dark3); border:1.5px solid var(--gold);
+      border-radius:var(--radius); padding:16px;
+      font-family:monospace; font-size:.82rem; color:var(--gold);
+      word-break:break-all; line-height:1.6;
+      box-shadow:0 0 20px rgba(212,175,55,.1);
+    }
+    .token-actions { display:flex; gap:8px; margin-top:12px; }
+    .t-btn {
+      flex:1; padding:10px; border-radius:8px; font-size:.8rem;
+      font-weight:600; cursor:pointer; display:flex; align-items:center;
+      justify-content:center; gap:6px; transition:all .2s;
+      font-family:'Montserrat',sans-serif;
+    }
+    .t-btn.copy { background:var(--gold); color:var(--black); border:none; }
+    .t-btn.copy:hover { background:var(--gold2); }
+    .t-btn.wa { background:#25d366; color:#fff; border:none; }
+    .t-btn.wa:hover { background:#1da853; }
+    .t-btn.mail { background:transparent; color:var(--gold); border:1px solid var(--border); }
+    .t-btn.mail:hover { border-color:var(--gold); }
+    .copied-msg { font-size:.75rem; color:#2ecc71; text-align:center; margin-top:6px; min-height:18px; }
+
+    /* ── TOKEN LIST ── */
+    .token-list { display:flex; flex-direction:column; gap:12px; max-height:620px; overflow-y:auto; }
+    .tl-item {
+      background:var(--dark3); border:1px solid var(--border);
+      border-radius:var(--radius); padding:16px; transition:border-color .2s;
+    }
+    .tl-item:hover { border-color:rgba(212,175,55,.4); }
+    .tl-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+    .tl-client { font-weight:700; font-size:.92rem; }
+    .tl-plan {
+      font-size:.68rem; font-weight:700; padding:3px 10px; border-radius:99px;
+      background:var(--gold); color:var(--black); text-transform:uppercase; letter-spacing:1px;
+    }
+    .tl-plan.vip { background:linear-gradient(135deg,var(--gold),var(--gold2)); }
+    .tl-plan.basic { background:var(--dark2); color:var(--gray); border:1px solid var(--border); }
+    .tl-meta { display:flex; gap:16px; font-size:.76rem; color:var(--gray); margin-bottom:10px; flex-wrap:wrap; }
+    .tl-meta span { display:flex; align-items:center; gap:4px; }
+    .tl-token {
+      font-family:monospace; font-size:.7rem; color:rgba(212,175,55,.6);
+      word-break:break-all; cursor:pointer; padding:6px;
+      background:var(--dark2); border-radius:6px; transition:color .2s;
+    }
+    .tl-token:hover { color:var(--gold); }
+    .tl-actions { display:flex; gap:6px; margin-top:10px; }
+    .tl-btn {
+      padding:6px 12px; border-radius:6px; font-size:.75rem; font-weight:600;
+      cursor:pointer; font-family:'Montserrat',sans-serif; transition:all .2s;
+      display:flex; align-items:center; gap:5px; border:none;
+    }
+    .tl-btn.c { background:var(--gold-dim); color:var(--gold); border:1px solid var(--border); }
+    .tl-btn.c:hover { background:var(--gold); color:var(--black); }
+    .tl-btn.w { background:rgba(37,211,102,.15); color:#25d366; border:1px solid rgba(37,211,102,.3); }
+    .tl-btn.w:hover { background:#25d366; color:#fff; }
+    .tl-btn.d { background:rgba(231,76,60,.1); color:#e74c3c; border:1px solid rgba(231,76,60,.2); }
+    .tl-btn.d:hover { background:#e74c3c; color:#fff; }
+    .badge-exp { color:#e74c3c; font-size:.68rem; }
+    .badge-ok  { color:#2ecc71; font-size:.68rem; }
+    .no-tokens { text-align:center; color:var(--gray); padding:40px 20px; font-size:.85rem; }
+
+    /* ── STATS ── */
+    .stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:24px; }
+    .stat-box {
+      background:var(--dark3); border:1px solid var(--border);
+      border-radius:var(--radius); padding:16px; text-align:center;
+    }
+    .stat-box b { display:block; font-family:'Cinzel',serif; font-size:1.8rem; color:var(--gold); }
+    .stat-box span { font-size:.72rem; color:var(--gray); text-transform:uppercase; letter-spacing:1px; }
+
+    /* ── VERIFY ── */
+    .verify-wrap { margin-top:24px; padding-top:24px; border-top:1px solid var(--border); }
+    .verify-wrap h3 { font-size:.85rem; color:var(--gray); margin-bottom:12px; text-transform:uppercase; letter-spacing:1px; }
+    .v-row { display:flex; gap:8px; }
+    .v-row input { flex:1; }
+    .v-btn {
+      background:var(--dark3); border:1.5px solid var(--border);
+      color:var(--gold); padding:11px 16px; border-radius:var(--radius);
+      cursor:pointer; font-family:'Montserrat',sans-serif; font-size:.85rem;
+      transition:all .2s; white-space:nowrap;
+    }
+    .v-btn:hover { border-color:var(--gold); background:var(--gold-dim); }
+    .v-result { margin-top:10px; padding:12px; border-radius:8px; font-size:.82rem; display:none; }
+    .v-result.ok  { background:rgba(46,204,113,.1); border:1px solid rgba(46,204,113,.3); color:#2ecc71; }
+    .v-result.err { background:rgba(231,76,60,.1);  border:1px solid rgba(231,76,60,.3);  color:#e74c3c; }
+
+    @media(max-width:800px) { .admin-grid { grid-template-columns:1fr; } }
+    @media(max-width:500px) { .stats-row { grid-template-columns:1fr 1fr; } .admin-body { padding:20px 16px; } }
+  </style>
+</head>
+<body>
+
+<!-- ═══════ LOGIN ═══════ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">BLADE</div>
+    <div class="login-sub">Admin Panel</div>
+    <input type="password" id="pwdInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()"><i class="fas fa-unlock-alt"></i> Кіру</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- ═══════ ADMIN APP ═══════ -->
+<div id="adminApp">
+  <nav class="admin-nav">
+    <div class="admin-logo">BLADE <span>Token Manager</span></div>
+    <button class="logout-btn" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Шығу</button>
+  </nav>
+
+  <div class="admin-body">
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-box"><b id="stTotal">0</b><span>Барлық токен</span></div>
+      <div class="stat-box"><b id="stActive">0</b><span>Белсенді</span></div>
+      <div class="stat-box"><b id="stExp">0</b><span>Мерзімі өткен</span></div>
+    </div>
+
+    <div class="admin-grid">
+
+      <!-- LEFT: Generator -->
+      <div>
+        <div class="card">
+          <h2><i class="fas fa-key"></i> Жаңа токен жасау</h2>
+
+          <div class="fg">
+            <label>Клиент аты *</label>
+            <input type="text" id="gClient" placeholder="Мысалы: Арман Барбершоп">
+          </div>
+          <div class="fg">
+            <label>Домен (бос = кез келген)</label>
+            <input type="text" id="gDomain" placeholder="mysite.kz немесе бос қалдырыңыз">
+          </div>
+          <div class="row2">
+            <div class="fg">
+              <label>Тариф</label>
+              <select id="gPlan">
+                <option value="basic">Базовый</option>
+                <option value="full" selected>Полный</option>
+                <option value="vip">VIP</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Мерзім</label>
+              <input type="date" id="gExpiry">
+            </div>
+          </div>
+          <div class="fg">
+            <label>Ескерту</label>
+            <textarea id="gNote" placeholder="Жазбаша ескерту (міндетті емес)"></textarea>
+          </div>
+
+          <button class="gen-btn" onclick="generateToken()">
+            <i class="fas fa-magic"></i> Токен жасау
+          </button>
+
+          <!-- Result -->
+          <div class="token-result" id="tokenResult">
+            <div class="token-box" id="tokenBox"></div>
+            <div class="token-actions">
+              <button class="t-btn copy" onclick="copyToken()"><i class="fas fa-copy"></i> Көшіру</button>
+              <button class="t-btn wa"   onclick="sendWA()"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+              <button class="t-btn mail" onclick="sendMail()"><i class="fas fa-envelope"></i> Email</button>
+            </div>
+            <div class="copied-msg" id="copiedMsg"></div>
+          </div>
+
+          <!-- Verify -->
+          <div class="verify-wrap">
+            <h3><i class="fas fa-shield-alt"></i> Токен тексеру</h3>
+            <div class="v-row">
+              <input type="text" id="vInput" class="fg" placeholder="BLD-…" style="margin:0">
+              <button class="v-btn" onclick="verifyToken()">Тексеру</button>
+            </div>
+            <div class="v-result" id="vResult"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Token list -->
+      <div>
+        <div class="card">
+          <h2><i class="fas fa-list"></i> Токендер тізімі <span id="listCount" style="font-size:.75rem;color:var(--gray);font-family:'Montserrat',sans-serif;font-weight:400;margin-left:auto"></span></h2>
+          <div class="token-list" id="tokenList">
+            <div class="no-tokens"><i class="fas fa-key" style="font-size:2rem;color:var(--border);display:block;margin-bottom:12px"></i>Әлі токен жоқ. Жоғарыдан жасаңыз.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="js/license.js"></script>
+<script>
+  /* ─── Admin password (change this!) ─── */
+  const ADMIN_PASS = 'blade2025';
+  const TOKENS_KEY = 'blade_admin_tokens';
+
+  /* ─── Login ─── */
+  function doLogin() {
+    const pw = document.getElementById('pwdInput').value;
+    if (pw === ADMIN_PASS) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminApp').style.display = 'block';
+      loadTokenList();
+      setDefaultExpiry();
+    } else {
+      document.getElementById('loginErr').textContent = 'Қате пароль';
+      document.getElementById('pwdInput').value = '';
+      setTimeout(() => document.getElementById('loginErr').textContent = '', 2000);
+    }
+  }
+  function doLogout() {
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('adminApp').style.display = 'none';
+    document.getElementById('pwdInput').value = '';
+  }
+  document.getElementById('pwdInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+
+  function setDefaultExpiry() {
+    const d = new Date(); d.setFullYear(d.getFullYear() + 1);
+    document.getElementById('gExpiry').value = d.toISOString().slice(0, 10);
+  }
+
+  /* ─── Generate ─── */
+  let _lastToken = '';
+  let _lastClient = '';
+  function generateToken() {
+    const client = document.getElementById('gClient').value.trim();
+    const domain = document.getElementById('gDomain').value.trim() || '*';
+    const plan   = document.getElementById('gPlan').value;
+    const expiry = document.getElementById('gExpiry').value;
+    const note   = document.getElementById('gNote').value.trim();
+
+    if (!client) { alert('Клиент атын енгізіңіз'); document.getElementById('gClient').focus(); return; }
+    if (!expiry) { alert('Мерзім таңдаңыз'); document.getElementById('gExpiry').focus(); return; }
+
+    const token = LICENSE.generate({ client, domain, plan, expires: expiry, note });
+    _lastToken  = token;
+    _lastClient = client;
+
+    document.getElementById('tokenBox').textContent = token;
+    document.getElementById('tokenResult').style.display = 'block';
+    document.getElementById('copiedMsg').textContent = '';
+
+    /* Save to list */
+    const tokens = getStoredTokens();
+    tokens.unshift({ token, client, domain, plan, expiry, note, created: new Date().toISOString().slice(0,10) });
+    saveTokens(tokens);
+    loadTokenList();
+  }
+
+  /* ─── Copy ─── */
+  function copyToken() {
+    navigator.clipboard.writeText(_lastToken).then(() => {
+      document.getElementById('copiedMsg').textContent = '✓ Көшірілді!';
+      setTimeout(() => document.getElementById('copiedMsg').textContent = '', 2000);
+    });
+  }
+  function copyTokenByVal(val) {
+    navigator.clipboard.writeText(val).then(() => {
+      alert('Токен көшірілді!');
+    });
+  }
+
+  /* ─── Send ─── */
+  function sendWA() {
+    const msg = encodeURIComponent(
+      `Сәлеметсіз бе, ${_lastClient}!\n\n` +
+      `BLADE Barbershop сайтыңыздың токені:\n\n` +
+      `${_lastToken}\n\n` +
+      `Активация үшін сайтта осы токенді енгізіңіз.\n` +
+      `Сұрақ туса хабарласыңыз — +7 (775) 724-86-19`
+    );
+    window.open(`https://wa.me/?text=${msg}`, '_blank');
+  }
+  function sendMail() {
+    const sub  = encodeURIComponent(`BLADE — Сайт активация токені`);
+    const body = encodeURIComponent(
+      `Сәлеметсіз бе, ${_lastClient}!\n\n` +
+      `Сіздің барбершоп сайтыңыздың активация токені:\n\n` +
+      `${_lastToken}\n\n` +
+      `Сайтты ашқанда «Токен енгізу» батырмасын басып, жоғарыдағы токенді енгізіңіз.\n\n` +
+      `Сәттілік!\nBLADE System`
+    );
+    location.href = `mailto:?subject=${sub}&body=${body}`;
+  }
+
+  /* ─── Verify ─── */
+  function verifyToken() {
+    const token = document.getElementById('vInput').value.trim();
+    const res   = LICENSE.validate(token);
+    const el    = document.getElementById('vResult');
+    el.style.display = 'block';
+    if (res.ok) {
+      const d = LICENSE.daysLeft(res.payload.e);
+      el.className = 'v-result ok';
+      el.innerHTML = `<i class="fas fa-check-circle"></i> <b>Жарамды</b> — ${res.payload.n} | ${LICENSE.planLabel(res.payload.p)} | Қалды: ${d} күн (${res.payload.e})`;
+    } else {
+      el.className = 'v-result err';
+      el.innerHTML = `<i class="fas fa-times-circle"></i> ${res.err}`;
+    }
+  }
+
+  /* ─── Storage ─── */
+  function getStoredTokens() {
+    try { return JSON.parse(localStorage.getItem(TOKENS_KEY)) || []; } catch { return []; }
+  }
+  function saveTokens(arr) { localStorage.setItem(TOKENS_KEY, JSON.stringify(arr)); }
+
+  /* ─── Token list ─── */
+  function loadTokenList() {
+    const tokens = getStoredTokens();
+    const el     = document.getElementById('tokenList');
+    document.getElementById('listCount').textContent = `(${tokens.length})`;
+
+    let total = tokens.length, active = 0, expired = 0;
+    tokens.forEach(t => {
+      const r = LICENSE.validate(t.token);
+      r.ok ? active++ : expired++;
+    });
+    document.getElementById('stTotal').textContent  = total;
+    document.getElementById('stActive').textContent = active;
+    document.getElementById('stExp').textContent    = expired;
+
+    if (!tokens.length) {
+      el.innerHTML = '<div class="no-tokens"><i class="fas fa-key" style="font-size:2rem;color:var(--border);display:block;margin-bottom:12px"></i>Әлі токен жоқ.</div>';
+      return;
+    }
+
+    el.innerHTML = tokens.map((t, i) => {
+      const valid    = LICENSE.validate(t.token);
+      const daysLeft = valid.ok ? LICENSE.daysLeft(t.expiry) : 0;
+      const statusEl = valid.ok
+        ? `<span class="badge-ok"><i class="fas fa-circle" style="font-size:.4rem"></i> Белсенді · ${daysLeft} күн</span>`
+        : `<span class="badge-exp"><i class="fas fa-exclamation-circle"></i> Мерзімі өткен</span>`;
+      const domainTxt = t.domain === '*' ? 'Кез келген домен' : t.domain;
+      const plan      = t.plan || 'full';
+      return `
+        <div class="tl-item">
+          <div class="tl-head">
+            <span class="tl-client">${t.client}</span>
+            <span class="tl-plan ${plan}">${LICENSE.planLabel(plan)}</span>
+          </div>
+          <div class="tl-meta">
+            <span><i class="far fa-calendar-alt"></i> ${t.expiry}</span>
+            <span><i class="fas fa-globe"></i> ${domainTxt}</span>
+            <span><i class="fas fa-clock"></i> ${t.created || '—'}</span>
+            ${statusEl}
+          </div>
+          <div class="tl-token" onclick="copyTokenByVal(this.textContent)" title="Басу = көшіру">${t.token}</div>
+          <div class="tl-actions">
+            <button class="tl-btn c" onclick="copyTokenByVal('${t.token}')"><i class="fas fa-copy"></i> Көшіру</button>
+            <button class="tl-btn w" onclick="sendWADirect('${t.token}','${t.client}')"><i class="fab fa-whatsapp"></i> WA</button>
+            <button class="tl-btn d" onclick="deleteToken(${i})"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function sendWADirect(token, client) {
+    const msg = encodeURIComponent(
+      `Сәлеметсіз бе, ${client}!\n\nSайт активация токені:\n\n${token}\n\nСайтта «Токен енгізу» батырмасын басыңыз.`
+    );
+    window.open(`https://wa.me/?text=${msg}`, '_blank');
+  }
+
+  function deleteToken(i) {
+    if (!confirm('Токенді жою керек пе?')) return;
+    const tokens = getStoredTokens();
+    tokens.splice(i, 1);
+    saveTokens(tokens);
+    loadTokenList();
+  }
+</script>
+</body>
+</html>
